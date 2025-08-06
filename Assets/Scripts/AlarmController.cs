@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class AlarmController : MonoBehaviour
@@ -31,10 +31,13 @@ public class AlarmController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Character>(out _))
+        if (other.TryGetComponent<Character>(out Character character))
         {
-            _isThiefInside = true;
-            _targetVolume = _maxVolume;
+            if (character.IsThief)// для тестов
+            {
+                _isThiefInside = true;
+                _targetVolume = _maxVolume;
+            }
         }
     }
 

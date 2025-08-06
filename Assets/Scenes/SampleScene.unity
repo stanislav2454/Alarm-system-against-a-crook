@@ -1675,6 +1675,7 @@ MonoBehaviour:
   _movement: {fileID: 0}
   _jumper: {fileID: 0}
   _groundDetector: {fileID: 0}
+  _isThief: 1
 --- !u!114 &2137402879
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Userinput), typeof(CharacterMovement), typeof(GroundDetector))]
 [RequireComponent(typeof(Jumper))]
@@ -8,6 +8,10 @@ public class Character : MonoBehaviour
     [SerializeField] private CharacterMovement _movement;
     [SerializeField] private Jumper _jumper;
     [SerializeField] private GroundDetector _groundDetector;
+
+    [SerializeField] private bool _isThief = false;
+    // для тестов
+    public bool IsThief => _isThief;
 
     private void Awake()
     {
