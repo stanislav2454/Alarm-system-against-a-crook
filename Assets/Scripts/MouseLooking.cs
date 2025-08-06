@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MouseLooking : MonoBehaviour
 {
+    private const int ZeroValue = 0;
 
     private readonly string MouseX = ("Mouse X");
     public readonly string MouseY = ("Mouse Y");
@@ -22,7 +23,7 @@ public class MouseLooking : MonoBehaviour
     {
         _cameraVertScroll -= Input.GetAxis(MouseY) * _rotateSpeed * Time.deltaTime;
         _cameraVertScroll = Mathf.Clamp(_cameraVertScroll, _minAngle, _maxAngle);
-        _camera.localEulerAngles = new Vector3(_cameraVertScroll, 0, 0);
+        _camera.localEulerAngles = new Vector3(_cameraVertScroll, ZeroValue, ZeroValue);
 
         transform.Rotate(Input.GetAxis(MouseX) * _rotateSpeed * Time.deltaTime * Vector3.up);
     }

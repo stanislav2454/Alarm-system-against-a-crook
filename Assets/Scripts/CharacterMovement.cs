@@ -1,37 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(CapsuleCollider))]
 public class CharacterMovement : MonoBehaviour
 {// 3
+    private const int ZeroValue = 0;
+
     [SerializeField] private float _walkSpeed = 6;
     [SerializeField] private float _runSpeed = 10;
     [SerializeField] private float _crawlSpeed = 3;
-    [SerializeField] private float _jumpPower = 5;
 
     private float _moveSpeed;
     private bool _isRun;
     private bool _ifSitt;
-    private Rigidbody _rigidbody;
     private CapsuleCollider _collider;
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
         _moveSpeed = _walkSpeed;
     }
 
     public void Move(float HorizontalDirection, float VerticalDirection)
     {
-        Vector3 direction = new Vector3(HorizontalDirection, 0, VerticalDirection) * _moveSpeed * Time.deltaTime;
+        Vector3 direction = new Vector3(HorizontalDirection, ZeroValue, VerticalDirection) * _moveSpeed * Time.deltaTime;
         transform.Translate(direction);
     }
 
 
 
-
     //======================================================================================
+    // Вопрс: нужно создавать отдельные классы для бега и приседа, Runner и Crawler?
+    // Т.К. и бег и приседание попадает под логику передвижения,
+    // но с т.зрения структуры по аналогии с прыжком, выбиваетюся из общего вида...
+    // Это особенно видно по классу Character.
     public void Run()
     {// todo Lerp ?
         if (_ifSitt == false)
@@ -46,13 +47,9 @@ public class CharacterMovement : MonoBehaviour
         _isRun = false;
 
         if (_ifSitt == true)
-        {
             _moveSpeed = _crawlSpeed;
-        }
         else
-        {
             _moveSpeed = _walkSpeed;
-        }
     }
 
     #region DuckDown
@@ -61,8 +58,8 @@ public class CharacterMovement : MonoBehaviour
         if (_isRun == false)
         {
             _ifSitt = true;
-            transform.localScale = new Vector3(1f, 0.5f, 1f);
-            _collider.height = 1f;
+            transform.localScale = new Vector3(1f, 0.5f, 1f);// todo
+            _collider.height = 1f;// todo
             _moveSpeed = _crawlSpeed;
         }
     }
@@ -70,14 +67,9 @@ public class CharacterMovement : MonoBehaviour
     public void Standup()
     {// todo Lerp ?
         _ifSitt = false;
-        transform.localScale = new Vector3(1f, 1f, 1f);
-        _collider.height = 2f;
+        transform.localScale = new Vector3(1f, 1f, 1f);// todo
+        _collider.height = 2f;// todo
         _moveSpeed = _walkSpeed;
     }
     #endregion
-
-    public void Jump()
-    {
-        _rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.VelocityChange);
-    }
 }
