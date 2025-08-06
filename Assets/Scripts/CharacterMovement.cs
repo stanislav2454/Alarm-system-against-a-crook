@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
-{
+{// 3
     [SerializeField] private float _walkSpeed = 6;
     [SerializeField] private float _runSpeed = 10;
     [SerializeField] private float _crawlSpeed = 3;
@@ -28,6 +28,10 @@ public class CharacterMovement : MonoBehaviour
         transform.Translate(direction);
     }
 
+
+
+
+    //======================================================================================
     public void Run()
     {// todo Lerp ?
         if (_ifSitt == false)
@@ -59,7 +63,6 @@ public class CharacterMovement : MonoBehaviour
             _ifSitt = true;
             transform.localScale = new Vector3(1f, 0.5f, 1f);
             _collider.height = 1f;
-            //transform.position = new Vector3(transform.position.x, -0.2f, transform.position.z);
             _moveSpeed = _crawlSpeed;
         }
     }
@@ -75,22 +78,6 @@ public class CharacterMovement : MonoBehaviour
 
     public void Jump()
     {
-        //_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-        //_rigidbody.AddForce(new Vector2(0, _jumpForce));
         _rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.VelocityChange);
     }
-    //private float _speedX;
-    //private float _jumpForce;
-    //private Rigidbody2D _rigidbody;
-
-    //public void Jump()
-    //{
-    //    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-    //    _rigidbody.AddForce(new Vector2(0, _jumpForce));
-    //}
-
-    //public void Move(float direction)
-    //{
-    //    _rigidbody.velocity = new Vector2(_speedX * direction * Time.fixedDeltaTime, _rigidbody.velocity.y);
-    //}
 }
