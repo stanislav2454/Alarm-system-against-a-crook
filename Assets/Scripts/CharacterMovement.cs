@@ -1,75 +1,43 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(CapsuleCollider), typeof(Runner), typeof(Crawler))]
 public class CharacterMovement : MonoBehaviour
-{// 3
+{
     private const int ZeroValue = 0;
 
     [SerializeField] private float _walkSpeed = 6;
-    [SerializeField] private float _runSpeed = 10;
-    [SerializeField] private float _crawlSpeed = 3;
 
-    private float _moveSpeed;
-    private bool _isRun;
-    private bool _ifSitt;
-    private CapsuleCollider _collider;
+    private float _currentMoveSpeed;
+    private Runner _runner;
+    private Crawler _crawler;
 
     private void Awake()
     {
-        _collider = GetComponent<CapsuleCollider>();
-        _moveSpeed = _walkSpeed;
+        _runner = GetComponent<Runner>();
+        _crawler = GetComponent<Crawler>();
     }
 
-    public void Move(float HorizontalDirection, float VerticalDirection)
+    public void Move(float horizontalDirection, float verticalDirection)
     {
-        Vector3 direction = new Vector3(HorizontalDirection, ZeroValue, VerticalDirection) * _moveSpeed * Time.deltaTime;
+        UpdateMovementSpeed();
+
+        Vector3 direction = new Vector3(horizontalDirection, ZeroValue, verticalDirection) * _currentMoveSpeed * Time.deltaTime;
         transform.Translate(direction);
     }
 
-
-
-    //======================================================================================
-    // Вопрс: нужно создавать отдельные классы для бега и приседа, Runner и Crawler?
-    // Т.К. и бег и приседание попадает под логику передвижения,
-    // но с т.зрения структуры по аналогии с прыжком, выбиваетюся из общего вида...
-    // Это особенно видно по классу Character.
-    public void Run()
-    {// todo Lerp ?
-        if (_ifSitt == false)
+    private void UpdateMovementSpeed()
+    {
+        if (_crawler.IsCrawling)
         {
-            _isRun = true;
-            _moveSpeed = _runSpeed;
+            _currentMoveSpeed = _crawler.CurrentSpeed;
         }
-    }
-
-    public void Walk()
-    {// todo Lerp ?
-        _isRun = false;
-
-        if (_ifSitt == true)
-            _moveSpeed = _crawlSpeed;
+        else if (_runner.IsRunning)
+        {
+            _currentMoveSpeed = _runner.CurrentSpeed;
+        }
         else
-            _moveSpeed = _walkSpeed;
-    }
-
-    #region DuckDown
-    public void DuckDown()
-    {// todo Lerp ?
-        if (_isRun == false)
         {
-            _ifSitt = true;
-            transform.localScale = new Vector3(1f, 0.5f, 1f);// todo
-            _collider.height = 1f;// todo
-            _moveSpeed = _crawlSpeed;
+            _currentMoveSpeed = _walkSpeed;
         }
     }
-
-    public void Standup()
-    {// todo Lerp ?
-        _ifSitt = false;
-        transform.localScale = new Vector3(1f, 1f, 1f);// todo
-        _collider.height = 2f;// todo
-        _moveSpeed = _walkSpeed;
-    }
-    #endregion
 }

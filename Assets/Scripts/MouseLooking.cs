@@ -4,9 +4,6 @@ public class MouseLooking : MonoBehaviour
 {
     private const int ZeroValue = 0;
 
-    private readonly string MouseX = ("Mouse X");
-    public readonly string MouseY = ("Mouse Y");
-
     [SerializeField] private float _rotateSpeed = 90;
     [SerializeField] private float _maxAngle = 20f;
     [SerializeField] private float _minAngle = -40f;
@@ -14,17 +11,12 @@ public class MouseLooking : MonoBehaviour
 
     private float _cameraVertScroll;
 
-    void Update()
+    public void Rotate(string mouseX, string mouseY)
     {
-        Rotate();
-    }
-
-    private void Rotate()
-    {
-        _cameraVertScroll -= Input.GetAxis(MouseY) * _rotateSpeed * Time.deltaTime;
+        _cameraVertScroll -= Input.GetAxis(mouseY) * _rotateSpeed * Time.deltaTime;
         _cameraVertScroll = Mathf.Clamp(_cameraVertScroll, _minAngle, _maxAngle);
         _camera.localEulerAngles = new Vector3(_cameraVertScroll, ZeroValue, ZeroValue);
 
-        transform.Rotate(Input.GetAxis(MouseX) * _rotateSpeed * Time.deltaTime * Vector3.up);
+        transform.Rotate(Input.GetAxis(mouseX) * _rotateSpeed * Time.deltaTime * Vector3.up);
     }
 }

@@ -441,8 +441,10 @@ GameObject:
   m_Component:
   - component: {fileID: 288884487}
   - component: {fileID: 288884490}
-  - component: {fileID: 288884489}
   - component: {fileID: 288884488}
+  - component: {fileID: 288884489}
+  - component: {fileID: 288884492}
+  - component: {fileID: 288884491}
   m_Layer: 0
   m_Name: AlarmController
   m_TagString: Untagged
@@ -573,8 +575,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fa85418c266bd43b45695c45d5fe92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alarmSound: {fileID: 288884488}
-  _fadeSpeed: 0.5
+  _fadeDuration: 2
+  _maxVolume: 1
 --- !u!65 &288884490
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -596,6 +598,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 4, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &288884491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288884486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee960ace64b23dd428b15a2e71382178, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &288884492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288884486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e14e15c1eed064aaab547cba7f6792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _zone: {fileID: 288884491}
+  _alarm: {fileID: 288884489}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,6 +1557,8 @@ GameObject:
   - component: {fileID: 2137402877}
   - component: {fileID: 2137402879}
   - component: {fileID: 2137402880}
+  - component: {fileID: 2137402882}
+  - component: {fileID: 2137402881}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1592,7 +1622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ca868e1b80eb499075528b8dc51bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movement: {fileID: 2137402877}
+  _runner: {fileID: 2137402882}
+  _crawler: {fileID: 2137402881}
 --- !u!136 &2137402874
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1657,8 +1688,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _walkSpeed: 5
-  _runSpeed: 9
-  _crawlSpeed: 2.5
 --- !u!114 &2137402878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1672,6 +1701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _input: {fileID: 0}
+  _mouseLooking: {fileID: 0}
   _movement: {fileID: 0}
   _jumper: {fileID: 0}
   _groundDetector: {fileID: 0}
@@ -1701,6 +1731,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jumpPower: 5
+--- !u!114 &2137402881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137402870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4420ff377bd3f7c4e8fe1767b251327a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crawlSpeed: 3
+  _crawlHeight: 1
+  _crawlScale: {x: 1, y: 0.5, z: 1}
+--- !u!114 &2137402882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137402870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb75d20a79306b84294ba0cc6b4518c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _runSpeed: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
