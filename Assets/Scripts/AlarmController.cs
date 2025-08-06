@@ -24,18 +24,14 @@ public class AlarmController : MonoBehaviour
             _fadeSpeed * Time.deltaTime);
 
         if (_alarmSound.volume == _minVolume && _isThiefInside == false)
-        {
             _alarmSound.Stop();
-        }
         else if (_alarmSound.volume > _minVolume && _alarmSound.isPlaying == false)
-        {
             _alarmSound.Play();
-        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Character>())
+        if (other.TryGetComponent<Character>(out _))
         {
             _isThiefInside = true;
             _targetVolume = _maxVolume;
@@ -44,7 +40,7 @@ public class AlarmController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Character>())
+        if (other.TryGetComponent<Character>(out _))
         {
             _isThiefInside = false;
             _targetVolume = _minVolume;
