@@ -1,22 +1,23 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class AlarmZone : MonoBehaviour
 {
-    public event UnityAction<Character> ThiefEntered;
-    public event UnityAction ThiefExited;
+    public event Action<Thief> ThiefEntered;
+    public event Action ThiefExited;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Character>(out var character) && character.IsThief)
+        if (other.TryGetComponent(out Thief thief) && thief.IsThief)
         {
-            ThiefEntered?.Invoke(character);
+            ThiefEntered?.Invoke(thief);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<Character>(out var character) && character.IsThief)
+        //if (other.TryGetComponent<Character>(out var character) && character.IsThief)
+        if (other.TryGetComponent(out Thief thief) && thief.IsThief)
         {
             ThiefExited?.Invoke();
         }

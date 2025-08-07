@@ -17,7 +17,6 @@ public class Userinput : MonoBehaviour
     public float VerticalDirection { get; private set; }
     public string HorizontalMouseDirection { get; private set; }
     public string VerticalMouseDirection { get; private set; }
-    public bool GetIsJump() => GetBoolAsTrigger(ref _isJump);
 
     private void Update()
     {
@@ -27,6 +26,9 @@ public class Userinput : MonoBehaviour
         DuckDown();
         Run();
     }
+
+    public bool GetIsJump() =>
+        GetBoolAsTrigger(ref _isJump);
 
     private void Move()
     {
@@ -40,13 +42,8 @@ public class Userinput : MonoBehaviour
         VerticalMouseDirection = MouseY;
     }
 
-    private void Run()
-    {
-        if (Input.GetKey(KeyCode.LeftShift))
-            _runner.Run();
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-            _runner.Walk();
-    }
+    private void Run() =>
+        _runner.SetRunning(Input.GetKey(KeyCode.LeftShift));
 
     private void Jump()
     {
@@ -64,8 +61,15 @@ public class Userinput : MonoBehaviour
     private void DuckDown()
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
-            _crawler.DuckDown();
+        {
+            if (_runner.IsRunning)
+                _runner.SetRunning(false);
+
+            _crawler.SetCrawling(true);
+        }
         else if (Input.GetKeyUp(KeyCode.LeftControl))
-            _crawler.Standup();
+        {
+            _crawler.SetCrawling(false);
+        }
     }
 }

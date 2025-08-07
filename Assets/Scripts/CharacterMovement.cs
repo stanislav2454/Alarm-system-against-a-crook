@@ -5,9 +5,9 @@ public class CharacterMovement : MonoBehaviour
 {
     private const int ZeroValue = 0;
 
-    [SerializeField] private float _walkSpeed = 6;
+    [SerializeField] private MovementSettings _settings;
 
-    private float _currentMoveSpeed;
+   // private float _currentMoveSpeed;
     private Runner _runner;
     private Crawler _crawler;
 
@@ -18,26 +18,22 @@ public class CharacterMovement : MonoBehaviour
     }
 
     public void Move(float horizontalDirection, float verticalDirection)
-    {
-        UpdateMovementSpeed();
+    {// - не надо передавать данные между методами через поля.
+     //   Для этого есть входные параметры и возвращаемое значение.
+        float _currentMoveSpeed = GetCurrentSpeed();
 
         Vector3 direction = new Vector3(horizontalDirection, ZeroValue, verticalDirection) * _currentMoveSpeed * Time.deltaTime;
         transform.Translate(direction);
     }
 
-    private void UpdateMovementSpeed()
+    private float GetCurrentSpeed()
     {
         if (_crawler.IsCrawling)
-        {
-            _currentMoveSpeed = _crawler.CurrentSpeed;
-        }
-        else if (_runner.IsRunning)
-        {
-            _currentMoveSpeed = _runner.CurrentSpeed;
-        }
-        else
-        {
-            _currentMoveSpeed = _walkSpeed;
-        }
+            return _settings.CrawlSpeed;
+
+        if (_runner.IsRunning)
+            return _settings.RunSpeed;
+
+        return _settings.WalkSpeed;
     }
 }

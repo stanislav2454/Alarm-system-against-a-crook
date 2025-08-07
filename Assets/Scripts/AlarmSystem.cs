@@ -4,8 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class AlarmSystem : MonoBehaviour
 {
-    [SerializeField] private float _fadeDuration = 2f;
-    [SerializeField] private float _maxVolume = 1f;
+    [SerializeField, Range(0.1f, 5f)] private float _fadeDuration = 1f;
+    [SerializeField, Range(0f, 1f)] private float _maxVolume = 0.8f;
 
     private AudioSource _alarm;
     private Coroutine _volumeCoroutine;
@@ -15,7 +15,8 @@ public class AlarmSystem : MonoBehaviour
     {
         _alarm = GetComponent<AudioSource>();
         _alarm.volume = _minVolume;
-        _alarm.loop = true;
+        _alarm.loop = true; 
+        _alarm.playOnAwake = false;
     }
 
     public void Activate()

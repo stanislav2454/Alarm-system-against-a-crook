@@ -13,7 +13,6 @@ public class Crawler : MonoBehaviour
     private bool _isCrawling;
 
     public bool IsCrawling => _isCrawling;
-    public float CurrentSpeed => _isCrawling ? _crawlSpeed : 0f;
 
     private void Awake()
     {
@@ -22,23 +21,13 @@ public class Crawler : MonoBehaviour
         _normalHeight = _collider.height;
     }
 
-    public void DuckDown()
+    public void SetCrawling(bool crawl)
     {
-        if (!_isCrawling)
-        {
-            _isCrawling = true;
-            transform.localScale = _crawlScale;
-            _collider.height = _crawlHeight;
-        }
-    }
+        if (_isCrawling == crawl) 
+            return;
 
-    public void Standup()
-    {
-        if (_isCrawling)
-        {
-            _isCrawling = false;
-            transform.localScale = _normalScale;
-            _collider.height = _normalHeight;
-        }
+        _isCrawling = crawl;
+        transform.localScale = crawl ? _crawlScale : _normalScale;
+        _collider.height = crawl ? _crawlHeight : _normalHeight;
     }
 }

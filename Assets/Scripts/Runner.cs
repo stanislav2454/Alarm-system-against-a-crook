@@ -2,20 +2,11 @@ using UnityEngine;
 
 public class Runner : MonoBehaviour
 {
-    [SerializeField] private float _runSpeed = 10f;
+    public bool IsRunning { get; private set; }
 
-    private bool _isRunning;
+    public void ToggleRunning() => 
+        IsRunning = !IsRunning;
 
-    public bool IsRunning => _isRunning;
-    public float CurrentSpeed => _isRunning ? _runSpeed : 0f;
-
-    public void Run()
-    {
-        _isRunning = true;
-    }
-
-    public void Walk()
-    {
-        _isRunning = false;
-    }
+    public void SetRunning(bool run) => 
+        IsRunning = run;
 }
