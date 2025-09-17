@@ -7,7 +7,6 @@ public class CharacterMovement : MonoBehaviour
 
     [SerializeField] private MovementSettings _settings;
 
-   // private float _currentMoveSpeed;
     private Runner _runner;
     private Crawler _crawler;
 

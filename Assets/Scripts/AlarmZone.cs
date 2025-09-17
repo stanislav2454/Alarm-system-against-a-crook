@@ -9,17 +9,12 @@ public class AlarmZone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Thief thief) && thief.IsThief)
-        {
             ThiefEntered?.Invoke(thief);
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //if (other.TryGetComponent<Character>(out var character) && character.IsThief)
         if (other.TryGetComponent(out Thief thief) && thief.IsThief)
-        {
             ThiefExited?.Invoke();
-        }
     }
 }

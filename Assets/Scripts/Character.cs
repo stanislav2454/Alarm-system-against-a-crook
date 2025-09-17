@@ -9,12 +9,6 @@ public class Character : MonoBehaviour
     [SerializeField] private CharacterMovement _movement;
     [SerializeField] private Jumper _jumper;
     [SerializeField] private GroundDetector _groundDetector;
-    //[SerializeField] private Thief _thiefIdentity;
-
-    //[Space(3)]
-    //[SerializeField] private bool _isThief = false;
-
-    // public bool IsThief => _isThief;
 
     private void Awake()
     {
@@ -23,7 +17,6 @@ public class Character : MonoBehaviour
         _movement = GetComponent<CharacterMovement>();
         _jumper = GetComponent<Jumper>();
         _groundDetector = GetComponent<GroundDetector>();
-        //_thiefIdentity = GetComponent<Thief>();
     }
 
     private void FixedUpdate()
