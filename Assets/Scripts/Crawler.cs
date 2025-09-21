@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider))]
 public class Crawler : MonoBehaviour
 {
-    [SerializeField] private float _crawlSpeed = 3f;
     [SerializeField] private float _crawlHeight = 1f;
     [SerializeField] private Vector3 _crawlScale = new Vector3(1f, 0.5f, 1f);
 
