@@ -187,21 +187,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813bc949c36c2c440b3a8eea49ca2fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponName: Weapon
-  attackRate: 1
-  range: 100
-  damage: 10
-  maxAmmo: 5
-  reloadTime: 2
-  attackMask:
+  WeaponName: Machine gun
+  AttackRate: 0.2
+  Range: 100
+  Damage: 10
+  MaxAmmo: 30
+  ReloadTime: 3
+  AttackMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  muzzleFlash: {fileID: 0}
-  impactEffect: {fileID: 0}
-  shootSound: {fileID: 8300000, guid: fa79a7c16af06204eaad5a8dca0f40e7, type: 3}
-  reloadSound: {fileID: 8300000, guid: c66edf59aef9aae43b87ce8e4980161b, type: 3}
-  firePoint: {fileID: 8362945288152850906}
-  recoilForce: 0.1
+  MuzzleFlash: {fileID: 0}
+  ImpactEffect: {fileID: 0}
+  ShootSound: {fileID: 8300000, guid: 89cdf66b291a6ac4d9d6fba78055c607, type: 3}
+  ReloadSound: {fileID: 8300000, guid: c66edf59aef9aae43b87ce8e4980161b, type: 3}
+  FirePoint: {fileID: 8362945288152850906}
+  _recoilForce: 0.1
 --- !u!1 &6575883529215134410
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,21 +322,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2153cf9d0f80aa24eb00bf2e34612f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponName: Weapon
-  attackRate: 1
-  range: 100
-  damage: 8
-  maxAmmo: 30
-  reloadTime: 3
-  attackMask:
+  WeaponName: Weapon
+  AttackRate: 1
+  Range: 100
+  Damage: 10
+  MaxAmmo: 30
+  ReloadTime: 2
+  AttackMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  muzzleFlash: {fileID: 0}
-  impactEffect: {fileID: 0}
-  shootSound: {fileID: 8300000, guid: fa79a7c16af06204eaad5a8dca0f40e7, type: 3}
-  reloadSound: {fileID: 8300000, guid: c66edf59aef9aae43b87ce8e4980161b, type: 3}
-  firePoint: {fileID: 8362945288152850906}
-  spreadAngle: 2
+  MuzzleFlash: {fileID: 0}
+  ImpactEffect: {fileID: 0}
+  ShootSound: {fileID: 0}
+  ReloadSound: {fileID: 0}
+  FirePoint: {fileID: 0}
+  _spreadAngle: 2
 --- !u!1 &6688467555539191491
 GameObject:
   m_ObjectHideFlags: 0

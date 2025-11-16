@@ -3,22 +3,22 @@
 public class MeleeWeapon : WeaponBase
 {
     [Header("Melee Settings")]
-    [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float damage = 25f;
-    [SerializeField] private LayerMask attackMask = ~0;
-    [SerializeField] private float attackAngle = 90f;
+    [SerializeField] private float _attackRange = 2f;
+    [SerializeField] private float _damage = 25f;
+    [SerializeField] private LayerMask _attackMask = ~0;
+    [SerializeField] private float _attackAngle = 90f;
 
     [Header("Visual Effects")]
-    [SerializeField] private ParticleSystem attackEffect;
-    [SerializeField] private AudioClip attackSound;
+    [SerializeField] private ParticleSystem _attackEffect;
+    [SerializeField] private AudioClip _attackSound;
 
-    private AudioSource audioSource;
+    private AudioSource _audioSource;
 
     private void Start()
     {
         //audioSource = GetComponent<AudioSource>();
         //if (audioSource == null)
-        audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public override void Attack()
@@ -28,62 +28,45 @@ public class MeleeWeapon : WeaponBase
 
         PlayAttackEffects();
         CheckHit();
-        //Debug.Log($"Melee attack with {weaponName}");
-
-        //RaycastHit hit;
-        //if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackMask))
-        //{
-        //    var damageable = hit.collider.GetComponent<IDamageable>();
-        //    if (damageable != null)
-        //    {
-        //        damageable.TakeDamage(damage);
-        //        Debug.Log($"Hit: {hit.collider.name} for {damage} damage");
-        //    }
-        //}
-
         ResetAttackTimer();
     }
 
     private void PlayAttackEffects()
     {
-        if (attackEffect != null)
-            attackEffect.Play();
+        if (_attackEffect != null)
+            _attackEffect.Play();
 
-        if (attackSound != null && audioSource != null)
-            audioSource.PlayOneShot(attackSound);
+        if (_attackSound != null && _audioSource != null)
+            _audioSource.PlayOneShot(_attackSound);
     }
 
     private void CheckHit()
     {
-        // SphereCast для площади атаки
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange, attackMask);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, _attackRange, _attackMask);
 
         foreach (var hitCollider in hitColliders)
         {
-            // Проверяем угол атаки
             Vector3 directionToTarget = (hitCollider.transform.position - transform.position).normalized;
             float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-            if (angle <= attackAngle / 2)
+            if (angle <= _attackAngle / 2)
             {
                 var damageable = hitCollider.GetComponent<IDamageable>();
-                damageable?.TakeDamage(damage);
+                damageable?.TakeDamage(_damage);
             }
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Визуализация области атаки
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
 
-        // Визуализация угла атаки
         Gizmos.color = Color.yellow;
-        Vector3 leftDirection = Quaternion.Euler(0, -attackAngle / 2, 0) * transform.forward;
-        Vector3 rightDirection = Quaternion.Euler(0, attackAngle / 2, 0) * transform.forward;
+        Vector3 leftDirection = Quaternion.Euler(0, -_attackAngle / 2, 0) * transform.forward;
+        Vector3 rightDirection = Quaternion.Euler(0, _attackAngle / 2, 0) * transform.forward;
 
-        Gizmos.DrawRay(transform.position, leftDirection * attackRange);
-        Gizmos.DrawRay(transform.position, rightDirection * attackRange);
+        Gizmos.DrawRay(transform.position, leftDirection * _attackRange);
+        Gizmos.DrawRay(transform.position, rightDirection * _attackRange);
     }
 }

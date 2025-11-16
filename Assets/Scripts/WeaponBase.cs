@@ -3,23 +3,23 @@ using UnityEngine;
 public abstract class WeaponBase : MonoBehaviour, IWeapon
 {
     [Header("Basic Weapon Settings")]
-    [SerializeField] protected string weaponName = "Weapon";
-    [SerializeField] protected float attackRate = 1f;
+    [SerializeField] protected string WeaponName = "Weapon";
+    [SerializeField] protected float AttackRate = 1f;
 
-    protected float nextAttackTime;
+    protected float NextAttackTime;
 
-    public string Name => weaponName;
+    public string Name => WeaponName;
 
     public virtual bool CanAttack()
     {
-        return Time.time >= nextAttackTime;
+        return Time.time >= NextAttackTime;
     }
 
     public abstract void Attack();
 
     protected void ResetAttackTimer()
     {
-        nextAttackTime = Time.time + attackRate;
+        NextAttackTime = Time.time + AttackRate;
     }
     private void OnDrawGizmosSelected()
     {

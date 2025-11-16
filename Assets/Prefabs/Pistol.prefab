@@ -183,21 +183,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813bc949c36c2c440b3a8eea49ca2fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponName: Weapon
-  attackRate: 1
-  range: 100
-  damage: 10
-  maxAmmo: 30
-  reloadTime: 2
-  attackMask:
+  WeaponName: Pistol
+  AttackRate: 1
+  Range: 100
+  Damage: 10
+  MaxAmmo: 5
+  ReloadTime: 2
+  AttackMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  muzzleFlash: {fileID: 0}
-  impactEffect: {fileID: 0}
-  shootSound: {fileID: 8300000, guid: fa79a7c16af06204eaad5a8dca0f40e7, type: 3}
-  reloadSound: {fileID: 8300000, guid: c66edf59aef9aae43b87ce8e4980161b, type: 3}
-  firePoint: {fileID: 2686124348349880344}
-  recoilForce: 0.1
+  MuzzleFlash: {fileID: 0}
+  ImpactEffect: {fileID: 0}
+  ShootSound: {fileID: 8300000, guid: fa79a7c16af06204eaad5a8dca0f40e7, type: 3}
+  ReloadSound: {fileID: 8300000, guid: c66edf59aef9aae43b87ce8e4980161b, type: 3}
+  FirePoint: {fileID: 2686124348349880344}
+  _recoilForce: 0.1
 --- !u!1 &8234485472037980663
 GameObject:
   m_ObjectHideFlags: 0

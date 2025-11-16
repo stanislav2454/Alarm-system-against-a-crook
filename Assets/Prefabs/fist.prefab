@@ -118,10 +118,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc43820ace623e48a73afff9c0f57c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponName: Weapon
-  attackRate: 1
-  attackRange: 2
-  damage: 25
-  attackMask:
+  WeaponName: Punch
+  AttackRate: 0.7
+  _attackRange: 1
+  _damage: 8
+  _attackMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  _attackAngle: 90
+  _attackEffect: {fileID: 0}
+  _attackSound: {fileID: 8300000, guid: 82707c0e32eecaa41a47b28ae1dffc0a, type: 3}

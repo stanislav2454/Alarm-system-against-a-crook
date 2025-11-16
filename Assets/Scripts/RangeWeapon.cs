@@ -3,37 +3,43 @@ using UnityEngine;
 public class RangeWeapon : WeaponBase
 {
     [Header("Range Weapon Settings")]
-    [SerializeField] protected float range = 100f;
-    [SerializeField] protected float damage = 10f;
-    [SerializeField] protected int maxAmmo = 30;
-    [SerializeField] protected float reloadTime = 2f;
-    [SerializeField] protected LayerMask attackMask = ~0;
+    [SerializeField] protected float Range = 100f;
+    [SerializeField] protected float Damage = 10f;
+    [SerializeField] protected int MaxAmmo = 30;
+    [SerializeField] protected float ReloadTime = 2f;
+    [SerializeField] protected LayerMask AttackMask = ~0;
 
     [Header("Visual Effects")]
-    [SerializeField] protected ParticleSystem muzzleFlash;
-    [SerializeField] protected GameObject impactEffect;
-    [SerializeField] protected AudioClip shootSound;
-    [SerializeField] protected AudioClip reloadSound;
-    [SerializeField] protected Transform firePoint;
+    [SerializeField] protected ParticleSystem MuzzleFlash;
+    [SerializeField] protected GameObject ImpactEffect;//
+    [SerializeField] protected AudioClip ShootSound;
+    [SerializeField] protected AudioClip ReloadSound;
+    [SerializeField] protected Transform FirePoint;
 
-    protected int currentAmmo;
-    protected bool isReloading;
+    protected int CurrentAmmo;
 
-    protected AudioSource audioSource;
+    protected AudioSource AudioSource;
+
+    public bool IsReloading { get; private set; }
 
     protected virtual void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
+        AudioSource = GetComponent<AudioSource>();
+        if (AudioSource == null)
+            AudioSource = gameObject.AddComponent<AudioSource>();
 
-        audioSource.playOnAwake = false;
-        currentAmmo = maxAmmo;
+        AudioSource.playOnAwake = false;
+        CurrentAmmo = MaxAmmo;
     }
+
+    public int GetCurrentAmmo() =>
+        CurrentAmmo;
+    public int GetMaxAmmo() =>
+        MaxAmmo;
 
     public override bool CanAttack()
     {
-        return base.CanAttack() && !isReloading && currentAmmo > 0;
+        return base.CanAttack() && IsReloading == false && CurrentAmmo > 0;
     }
 
     public override void Attack()
@@ -42,22 +48,22 @@ public class RangeWeapon : WeaponBase
             return;
 
         Shoot();
-        currentAmmo--;
+        CurrentAmmo--;
 
-        if (currentAmmo <= 0)
+        if (CurrentAmmo <= 0)
             StartReload();
     }
 
     protected virtual void Shoot()
     {
-        if (muzzleFlash != null)
-            muzzleFlash.Play();
+        if (MuzzleFlash != null)
+            MuzzleFlash.Play();
 
-        if (shootSound != null)
-            audioSource.PlayOneShot(shootSound);
+        if (ShootSound != null)
+            AudioSource.PlayOneShot(ShootSound);
 
         RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range, attackMask))
+        if (Physics.Raycast(FirePoint.position, FirePoint.forward, out hit, Range, AttackMask))
             OnHit(hit);
 
         ResetAttackTimer();
@@ -66,15 +72,15 @@ public class RangeWeapon : WeaponBase
     protected virtual void OnHit(RaycastHit hit)
     {
         var damageable = hit.collider.GetComponent<IDamageable>();
-        damageable?.TakeDamage(damage);
+        damageable?.TakeDamage(Damage);
 
-        if (impactEffect != null)
-            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        if (ImpactEffect != null)
+            Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
     }
 
     public virtual void StartReload()
     {
-        if (isReloading == false && currentAmmo < maxAmmo)
+        if (IsReloading == false && CurrentAmmo < MaxAmmo)
         {
             StartCoroutine(ReloadCoroutine());
         }
@@ -82,14 +88,14 @@ public class RangeWeapon : WeaponBase
 
     protected virtual System.Collections.IEnumerator ReloadCoroutine()
     {
-        isReloading = true;
+        IsReloading = true;
 
-        if (reloadSound != null)
-            audioSource.PlayOneShot(reloadSound);
+        if (ReloadSound != null)
+            AudioSource.PlayOneShot(ReloadSound);
 
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(ReloadTime);
 
-        currentAmmo = maxAmmo;
-        isReloading = false;
+        CurrentAmmo = MaxAmmo;
+        IsReloading = false;
     }
 }
