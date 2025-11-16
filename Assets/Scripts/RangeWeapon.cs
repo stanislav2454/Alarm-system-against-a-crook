@@ -27,6 +27,7 @@ public class RangeWeapon : WeaponBase
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
 
+        audioSource.playOnAwake = false;
         currentAmmo = maxAmmo;
     }
 

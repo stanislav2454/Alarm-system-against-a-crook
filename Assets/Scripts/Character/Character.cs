@@ -9,7 +9,7 @@ public class Character : MonoBehaviour
     [SerializeField] private CharacterMovement _movement;
     [SerializeField] private Jumper _jumper;
     [SerializeField] private GroundDetector _groundDetector;
-    [SerializeField] private AttackController attackController;
+    [SerializeField] private AttackController attackController;// ?
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class Character : MonoBehaviour
         _movement = GetComponent<CharacterMovement>();
         _jumper = GetComponent<Jumper>();
         _groundDetector = GetComponent<GroundDetector>();
-        attackController = GetComponent<AttackController>();
+        attackController = GetComponent<AttackController>();// ?
     }
 
     private void FixedUpdate()

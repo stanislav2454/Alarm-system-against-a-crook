@@ -53,7 +53,8 @@ public class Userinput : MonoBehaviour
         _runner.SetRunning(Input.GetKey(KeyCode.LeftShift));
 
     private void Attack() =>
-        AttackInput = Input.GetKeyDown(_attackButton);
+        AttackInput = Input.GetKey(_attackButton);
+    //AttackInput = Input.GetKeyDown(_attackButton);
 
     private void ReloadWeapon() =>
         IsReloading = Input.GetKeyDown(KeyCode.R);
