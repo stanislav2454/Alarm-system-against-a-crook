@@ -21,4 +21,9 @@ public abstract class WeaponBase : MonoBehaviour, IWeapon
     {
         nextAttackTime = Time.time + attackRate;
     }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward * 5);
+    }
 }
