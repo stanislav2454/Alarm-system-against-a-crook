@@ -8,6 +8,9 @@ public class Userinput : MonoBehaviour
     private readonly string MouseX = ("Mouse X");
     private readonly string MouseY = ("Mouse Y");
 
+    [Header("Input Settings")]
+    [SerializeField] private KeyCode _attackButton = KeyCode.Mouse0;
+
     [SerializeField] private Runner _runner;
     [SerializeField] private Crawler _crawler;
 
@@ -17,6 +20,7 @@ public class Userinput : MonoBehaviour
     public float VerticalDirection { get; private set; }
     public string HorizontalMouseDirection { get; private set; }
     public string VerticalMouseDirection { get; private set; }
+    public bool AttackInput { get; private set; }
 
     private void Update()
     {
@@ -25,6 +29,7 @@ public class Userinput : MonoBehaviour
         MouseLook();
         DuckDown();
         Run();
+        Attack();
     }
 
     public bool GetIsJump() =>
@@ -44,6 +49,9 @@ public class Userinput : MonoBehaviour
 
     private void Run() =>
         _runner.SetRunning(Input.GetKey(KeyCode.LeftShift));
+
+    private void Attack() =>
+        AttackInput = Input.GetKeyDown(_attackButton);
 
     private void Jump()
     {

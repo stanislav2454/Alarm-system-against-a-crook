@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Userinput), typeof(MouseLooking), typeof(CharacterMovement))]
-[RequireComponent(typeof(Jumper), typeof(GroundDetector))]
+[RequireComponent(typeof(Jumper), typeof(GroundDetector), typeof(AttackController))]
 public class Character : MonoBehaviour
 {
     [SerializeField] private Userinput _input;
@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     [SerializeField] private CharacterMovement _movement;
     [SerializeField] private Jumper _jumper;
     [SerializeField] private GroundDetector _groundDetector;
+    [SerializeField] private AttackController attackController;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class Character : MonoBehaviour
         _movement = GetComponent<CharacterMovement>();
         _jumper = GetComponent<Jumper>();
         _groundDetector = GetComponent<GroundDetector>();
+        attackController = GetComponent<AttackController>();
     }
 
     private void FixedUpdate()
