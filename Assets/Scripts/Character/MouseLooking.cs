@@ -13,6 +13,9 @@ public class MouseLooking : MonoBehaviour
 
     public void Rotate(string mouseX, string mouseY)
     {
+        if (_camera == null)
+            return;
+
         _cameraVertScroll -= Input.GetAxis(mouseY) * _rotateSpeed * Time.deltaTime;
         _cameraVertScroll = Mathf.Clamp(_cameraVertScroll, _minAngle, _maxAngle);
         _camera.localEulerAngles = new Vector3(_cameraVertScroll, ZeroValue, ZeroValue);

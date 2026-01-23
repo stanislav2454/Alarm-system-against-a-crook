@@ -5,8 +5,8 @@ public class Userinput : MonoBehaviour
 {
     public const string Horizontal = nameof(Horizontal);
     public const string Vertical = nameof(Vertical);
-    private readonly string MouseX = ("Mouse X");
-    private readonly string MouseY = ("Mouse Y");
+    private const string MouseX = ("Mouse X");
+    private const string MouseY = ("Mouse Y");
 
     [Header("Input Settings")]
     [SerializeField] private KeyCode _attackButton = KeyCode.Mouse0;

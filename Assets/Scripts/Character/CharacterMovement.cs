@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider), typeof(Runner), typeof(Crawler))]
+[RequireComponent(typeof(CapsuleCollider))] // На подумать: ? Почему капсуль ? 
+[RequireComponent(typeof(Runner), typeof(Crawler))]
 public class CharacterMovement : MonoBehaviour
 {
     private const int ZeroValue = 0;
@@ -17,12 +18,14 @@ public class CharacterMovement : MonoBehaviour
     }
 
     public void Move(float horizontalDirection, float verticalDirection)
-    {// - не надо передавать данные между методами через поля.
-     //   Для этого есть входные параметры и возвращаемое значение.
+    {
         float _currentMoveSpeed = GetCurrentSpeed();
 
         Vector3 direction = new Vector3(horizontalDirection, ZeroValue, verticalDirection) * _currentMoveSpeed * Time.deltaTime;
-        transform.Translate(direction);
+        transform.Translate(direction);// Почему transform.Translate , а не
+                                       // transform.position = new V3.MoveTowards(...)
+                                       // или rigidbody.AddForce(...)
+                                       // ?
     }
 
     private float GetCurrentSpeed()
