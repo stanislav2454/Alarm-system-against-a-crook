@@ -26,13 +26,15 @@ public class PlayerController : MonoBehaviour
         _weaponInventory = GetComponent<WeaponInventory>();
         _health = GetComponent<Damageable>();
 
-        GameManager.Instance?.RegisterPlayer(this);
+        //GameManager.Instance?.RegisterPlayer(this);
     }
 
     private void OnEnable()
     {
         if (_health != null)
             _health.OnDeath += HandleDeath;
+
+        GameManager.Instance?.RegisterPlayer(this);
     }
 
     private void OnDisable()

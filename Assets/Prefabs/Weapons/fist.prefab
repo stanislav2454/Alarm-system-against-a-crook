@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fb694046377e57d47861a3a6ffc8fc26, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,7 +100,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -118,13 +118,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc43820ace623e48a73afff9c0f57c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponName: Punch
-  AttackRate: 0.7
+  _weaponSettings: {fileID: 11400000, guid: 7666482676581fd4982dc51b4e6af87f, type: 2}
   _attackRange: 1
   _damage: 8
+  _attackAngle: 90
+  _knockbackForce: 5
   _attackMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  _attackAngle: 90
   _attackEffect: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 82707c0e32eecaa41a47b28ae1dffc0a, type: 3}

@@ -18,6 +18,9 @@ public class SimpleEnemy : MonoBehaviour
     private CharacterController _controller;
     private float _lastAttackTime;
 
+    // Статическое событие для отслеживания убийств
+    public static event Action EnemyKilled;
+
     private void OnEnable()
     {
         if (_damageable != null)
@@ -69,7 +72,7 @@ public class SimpleEnemy : MonoBehaviour
         }
     }
 
-    private void UpdateEnemy()
+    protected virtual void UpdateEnemy()
     {
         Vector3 direction = GetDirectionToPlayer();
         RotateTowardsPlayer(direction);
@@ -114,7 +117,7 @@ public class SimpleEnemy : MonoBehaviour
 
     private void HandleDamageTaken(float currentHealth)
     {
-        Debug.Log($"Enemy took damage! Health: {currentHealth}");
+        //Debug.Log($"Enemy took damage! Health: {currentHealth}");
 
         // Потом можно добавить:
         // - Звук получения урона
@@ -125,6 +128,10 @@ public class SimpleEnemy : MonoBehaviour
     private void HandleDeath()
     {
         Debug.Log($"{name} died!");
+
+        // Вызываем событие убийства
+        EnemyKilled?.Invoke();
+
         // Отключаем логику врага
         enabled = false;
 

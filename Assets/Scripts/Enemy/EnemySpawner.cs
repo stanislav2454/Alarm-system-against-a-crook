@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
         if (health != null)
             health.OnDeath += () => OnEnemyDeath();
 
-        Debug.Log($"Enemy spawned at {spawnPosition}. Total: {_currentEnemies}");
+        //Debug.Log($"Enemy spawned at {spawnPosition}. Total: {_currentEnemies}");
     }
 
     private Vector3 GetSpawnPosition()

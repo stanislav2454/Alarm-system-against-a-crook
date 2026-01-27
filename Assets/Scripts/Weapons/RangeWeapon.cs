@@ -1,13 +1,17 @@
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class RangeWeapon : WeaponBase
 {
     [Header("Range Weapon Settings")]
     [SerializeField] protected float Range = 100f;
-    [SerializeField] protected float Damage = 10f;
+    // [SerializeField] protected float Damage = 10f;
     [SerializeField] protected int MaxAmmo = 30;
     [SerializeField] protected float ReloadTime = 2f;
     [SerializeField] protected LayerMask AttackMask = ~0;
+    [SerializeField] protected float BaseSpread = 0.5f;
+    [SerializeField] protected float AttackRate = 1f;// Добавляем поле для базовой скорости атаки (для совместимости)
 
     [Header("Visual Effects")]
     [SerializeField] protected ParticleSystem MuzzleFlash;
@@ -16,30 +20,48 @@ public class RangeWeapon : WeaponBase
     [SerializeField] protected AudioClip ReloadSound;
     [SerializeField] protected Transform FirePoint;
 
+    //protected bool IsReloading = false;
     protected int CurrentAmmo;
-
     protected AudioSource AudioSource;
+    protected float CurrentSpread = 0f;
+    protected float MaxSpread = 2f;
+    protected float SpreadPerShot = 0.1f;
+    protected float SpreadRecoveryRate = 5f;
 
-    public bool IsReloading { get; private set; }
+    public event Action<float> ReloadStarted;
+    public event Action ReloadFinished;
+
+    public bool IsReloading { get; private set; } = false;
+    public int GetCurrentAmmo() => CurrentAmmo;//todo
+    public int GetMaxAmmo() => MaxAmmo;//todo
+    public override bool CanAttack() => base.CanAttack() && IsReloading == false && CurrentAmmo > 0;
 
     protected virtual void Start()
     {
-        AudioSource = GetComponent<AudioSource>();
-        if (AudioSource == null)
-            AudioSource = gameObject.AddComponent<AudioSource>();
-
+        //base.Start(); // Вызываем Awake из WeaponBase
+        AudioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
         AudioSource.playOnAwake = false;
-        CurrentAmmo = MaxAmmo;
+
+        if (_weaponSettings is RangeWeaponSettings rangeSettings)
+            InitializeFromRangeSettings(rangeSettings);
+        else
+            CurrentAmmo = MaxAmmo;
     }
 
-    public int GetCurrentAmmo() =>
-        CurrentAmmo;
-    public int GetMaxAmmo() =>
-        MaxAmmo;
-
-    public override bool CanAttack()
+    protected virtual void Update()
     {
-        return base.CanAttack() && IsReloading == false && CurrentAmmo > 0;
+        if (CurrentSpread > 0)
+            CurrentSpread = Mathf.Max(CurrentSpread - Time.deltaTime * SpreadRecoveryRate, 0f);
+    }
+
+    private void InitializeFromRangeSettings(RangeWeaponSettings rangeSettings)
+    {
+        Range = rangeSettings.Range;
+        MaxAmmo = rangeSettings.MaxAmmo;
+        ReloadTime = rangeSettings.ReloadTime;
+        AttackMask = rangeSettings.AttackMask;
+        BaseSpread = rangeSettings.BaseSpread;
+        CurrentAmmo = MaxAmmo;
     }
 
     public override void Attack()
@@ -47,14 +69,27 @@ public class RangeWeapon : WeaponBase
         if (CanAttack() == false)
             return;
 
-        Shoot();
+        NotifyDecoratorsOnAttack();// Уведомляем декораторы
+
+        float finalDamage = GetBaseDamage();
+        // Используем урон из WeaponSettings или локальный
+        //float finalDamage = _weaponSettings != null ?
+        //        baseDamage * GetTotalDamageMultiplier() :
+        //        Damage * GetTotalDamageMultiplier();
+
+        Shoot(finalDamage);
         CurrentAmmo--;
+
+        // Увеличение разброса
+        CurrentSpread = Mathf.Min(CurrentSpread + SpreadPerShot, MaxSpread);
 
         if (CurrentAmmo <= 0)
             StartReload();
+
+        ResetAttackTimer();
     }
 
-    protected virtual void Shoot()
+    protected virtual void Shoot(float damage)
     {
         if (MuzzleFlash != null)
             MuzzleFlash.Play();
@@ -62,17 +97,33 @@ public class RangeWeapon : WeaponBase
         if (ShootSound != null)
             AudioSource.PlayOneShot(ShootSound);
 
-        RaycastHit hit;
-        if (Physics.Raycast(FirePoint.position, FirePoint.forward, out hit, Range, AttackMask))
-            OnHit(hit);
+        Vector3 spreadDirection = GetSpreadDirection();
 
-        ResetAttackTimer();
+        RaycastHit hit;
+        if (Physics.Raycast(FirePoint.position, spreadDirection, out hit, Range, AttackMask))
+            OnHit(hit, damage);
     }
 
-    protected virtual void OnHit(RaycastHit hit)
+    protected virtual Vector3 GetSpreadDirection()
     {
-        var damageable = hit.collider.GetComponent<IDamageable>();
-        damageable?.TakeDamage(Damage);
+        Vector3 direction = FirePoint.forward;
+
+        if (CurrentSpread > 0)
+        {
+            float spreadAmount = Mathf.Lerp(BaseSpread, MaxSpread, CurrentSpread / MaxSpread);
+            direction += new Vector3(
+                    UnityEngine.Random.Range(-spreadAmount, spreadAmount) * 0.01f,
+                    UnityEngine.Random.Range(-spreadAmount, spreadAmount) * 0.01f,
+                    0);
+            direction.Normalize();
+        }
+
+        return direction;
+    }
+
+    protected virtual void OnHit(RaycastHit hit, float damage)
+    {
+        hit.collider.GetComponent<IDamageable>()?.TakeDamage(damage);
 
         if (ImpactEffect != null)
             Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
@@ -81,21 +132,44 @@ public class RangeWeapon : WeaponBase
     public virtual void StartReload()
     {
         if (IsReloading == false && CurrentAmmo < MaxAmmo)
-        {
             StartCoroutine(ReloadCoroutine());
-        }
     }
 
-    protected virtual System.Collections.IEnumerator ReloadCoroutine()
+    protected virtual IEnumerator ReloadCoroutine()
     {
         IsReloading = true;
+
+        float reloadMultiplier = 1f;
+        float totalReloadTime = ReloadTime * reloadMultiplier;
+
+        // Вызываем событие начала перезарядки с длительностью
+        ReloadStarted?.Invoke(totalReloadTime);
 
         if (ReloadSound != null)
             AudioSource.PlayOneShot(ReloadSound);
 
-        yield return new WaitForSeconds(ReloadTime);
+        foreach (var decorator in GetComponentsInChildren<WeaponDecorator>())
+            if (decorator is ExtendedMagDecorator extendedMag)
+                reloadMultiplier = extendedMag.GetReloadTimeMultiplier();
+
+        yield return new WaitForSeconds(totalReloadTime);
 
         CurrentAmmo = MaxAmmo;
         IsReloading = false;
+        CurrentSpread = 0f; // Сброс разброса при перезарядке
+        ReloadFinished?.Invoke();// Перезарядка завершена
+    }
+
+    //protected override void ResetAttackTimer()
+    //{
+    //    // Учитываем множитель скорострельности
+    //    float fireRate = AttackRate * GetTotalFireRateMultiplier();
+    //    _nextAttackTime = Time.time + (1f / fireRate);
+    //}
+    protected override void ResetAttackTimer()
+    {
+        float baseRate = _weaponSettings != null ? baseFireRate : AttackRate;
+        float finalFireRate = baseRate * GetTotalFireRateMultiplier();
+        _nextAttackTime = Time.time + (1f / finalFireRate);
     }
 }

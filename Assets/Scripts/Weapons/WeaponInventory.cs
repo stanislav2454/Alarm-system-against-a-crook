@@ -50,7 +50,7 @@ public class WeaponInventory : MonoBehaviour
         CurrentWeapon.gameObject.SetActive(true);
 
         WeaponChanged?.Invoke(CurrentWeapon);
-        Debug.Log($"Equipped: {CurrentWeapon.Name}");
+       // Debug.Log($"Equipped: {CurrentWeapon.Name}");
     }
 
     public void SwitchToNextWeapon()

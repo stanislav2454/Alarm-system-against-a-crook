@@ -38,7 +38,7 @@ public class Damageable : MonoBehaviour, IDamageable
         Health = Mathf.Max(0, Health - damage);
         OnDamageTaken?.Invoke(Health);
 
-        Debug.Log($"{gameObject.name} took {damage} damage. Health: {Health}");
+        //Debug.Log($"{gameObject.name} took {damage} damage. Health: {Health}");
 
         if (Health <= 0)
             Die();

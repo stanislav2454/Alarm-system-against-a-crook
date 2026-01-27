@@ -10,6 +10,10 @@ public class Userinput : MonoBehaviour
 
     [Header("Input Settings")]
     [SerializeField] private KeyCode _attackButton = KeyCode.Mouse0;
+    [SerializeField] private KeyCode _reloadButton = KeyCode.R;
+    [SerializeField] private KeyCode _runButton = KeyCode.LeftShift;
+    [SerializeField] private KeyCode _sitButton = KeyCode.LeftControl;
+    [SerializeField] private KeyCode _jumpButton = KeyCode.Space;
 
     [SerializeField] private Runner _runner;
     [SerializeField] private Crawler _crawler;
@@ -50,18 +54,17 @@ public class Userinput : MonoBehaviour
     }
 
     private void Run() =>
-        _runner.SetRunning(Input.GetKey(KeyCode.LeftShift));
+        _runner.SetRunning(Input.GetKey(_runButton));
 
     private void Attack() =>
         AttackInput = Input.GetKey(_attackButton);
-    //AttackInput = Input.GetKeyDown(_attackButton);
 
     private void ReloadWeapon() =>
-        IsReloading = Input.GetKeyDown(KeyCode.R);
+        IsReloading = Input.GetKeyDown(_reloadButton);
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(_jumpButton))
             _isJump = true;
     }
 
@@ -74,14 +77,14 @@ public class Userinput : MonoBehaviour
 
     private void DuckDown()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(_sitButton))
         {
             if (_runner.IsRunning)
                 _runner.SetRunning(false);
 
             _crawler.SetCrawling(true);
         }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        else if (Input.GetKeyUp(_sitButton))
         {
             _crawler.SetCrawling(false);
         }

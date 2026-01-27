@@ -33,7 +33,7 @@ public class WeaponPickup : MonoBehaviour
                 inventory.AddWeapon(newWeapon);
                 Destroy(gameObject);
 
-                Debug.Log($"Picked up: {_weaponPrefab.Name}");
+                //Debug.Log($"Picked up: {_weaponPrefab.Name}");
             }
         }
     }
@@ -44,7 +44,7 @@ public class WeaponPickup : MonoBehaviour
         {
             _playerInRange = true;
             // Здесь можно показать UI подсказку
-            Debug.Log(_pickupMessage);
+            //Debug.Log(_pickupMessage);
         }
     }
 

@@ -46,8 +46,8 @@ public class ConstantRaycaster : MonoBehaviour
 
             _hitDamageable = hit.transform.TryGetComponent(out Damageable target);
 
-            if (_hitDamageable)
-                Debug.Log($"Ray hit to: {target.gameObject.name}\n Hp: {target.Health}");
+            //if (_hitDamageable)
+            //    Debug.Log($"Ray hit to: {target.gameObject.name}\n Hp: {target.Health}");
 
         }
         else

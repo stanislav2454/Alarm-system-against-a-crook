@@ -5,10 +5,19 @@ public class Machinegun : RangeWeapon
     [Header("Auto Rifle Settings")]
     [SerializeField] private float _spreadAngle = 2f;
 
-    protected override void Shoot()
+    //private WeaponSettings _settings;
+
+    //protected override void Awake()
+    //{
+    //    base.Awake();
+
+    //    // Получаем настройки из базового класса
+    //    _settings = _weaponSettings;
+    //}
+
+    protected override void Shoot(float damage)
     {
-        // Добавляем разброс для автомата
-        Vector3 spread = FirePoint.forward;
+        Vector3 spread = GetSpreadDirection();// Добавляем разброс для автомата
         spread += new Vector3(
             Random.Range(-_spreadAngle, _spreadAngle) * 0.01f,
             Random.Range(-_spreadAngle, _spreadAngle) * 0.01f,
@@ -16,7 +25,7 @@ public class Machinegun : RangeWeapon
 
         RaycastHit hit;
         if (Physics.Raycast(FirePoint.position, spread, out hit, Range, AttackMask))
-            OnHit(hit);
+            OnHit(hit, damage);
 
         if (MuzzleFlash != null)
             MuzzleFlash.Play();
@@ -24,7 +33,8 @@ public class Machinegun : RangeWeapon
         if (ShootSound != null)
             AudioSource.PlayOneShot(ShootSound);
 
-        CurrentAmmo--;
-        ResetAttackTimer();
+        // Таймер сброса теперь вызывается в базовом классе RangeWeapon
+        //CurrentAmmo--;
+        //ResetAttackTimer();
     }
 }
