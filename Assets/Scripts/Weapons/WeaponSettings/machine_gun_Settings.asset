@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RangeWeaponSettings
   weaponName: Weapon
   baseDamage: 10
-  baseFireRate: 11
+  baseFireRate: 5
   globalDamageMultiplier: 1
   globalFireRateMultiplier: 1
   range: 80

@@ -6,7 +6,6 @@ public class RangeWeapon : WeaponBase
 {
     [Header("Range Weapon Settings")]
     [SerializeField] protected float Range = 100f;
-    // [SerializeField] protected float Damage = 10f;
     [SerializeField] protected int MaxAmmo = 30;
     [SerializeField] protected float ReloadTime = 2f;
     [SerializeField] protected LayerMask AttackMask = ~0;
@@ -14,13 +13,10 @@ public class RangeWeapon : WeaponBase
     [SerializeField] protected float AttackRate = 1f;// Добавляем поле для базовой скорости атаки (для совместимости)
 
     [Header("Visual Effects")]
-    [SerializeField] protected ParticleSystem MuzzleFlash;
-    [SerializeField] protected GameObject ImpactEffect;//
     [SerializeField] protected AudioClip ShootSound;
     [SerializeField] protected AudioClip ReloadSound;
     [SerializeField] protected Transform FirePoint;
 
-    //protected bool IsReloading = false;
     protected int CurrentAmmo;
     protected AudioSource AudioSource;
     protected float CurrentSpread = 0f;
@@ -38,7 +34,6 @@ public class RangeWeapon : WeaponBase
 
     protected virtual void Start()
     {
-        //base.Start(); // Вызываем Awake из WeaponBase
         AudioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
         AudioSource.playOnAwake = false;
 
@@ -71,13 +66,7 @@ public class RangeWeapon : WeaponBase
 
         NotifyDecoratorsOnAttack();// Уведомляем декораторы
 
-        float finalDamage = GetBaseDamage();
-        // Используем урон из WeaponSettings или локальный
-        //float finalDamage = _weaponSettings != null ?
-        //        baseDamage * GetTotalDamageMultiplier() :
-        //        Damage * GetTotalDamageMultiplier();
-
-        Shoot(finalDamage);
+        Shoot(BaseDamage);
         CurrentAmmo--;
 
         // Увеличение разброса
@@ -91,9 +80,6 @@ public class RangeWeapon : WeaponBase
 
     protected virtual void Shoot(float damage)
     {
-        if (MuzzleFlash != null)
-            MuzzleFlash.Play();
-
         if (ShootSound != null)
             AudioSource.PlayOneShot(ShootSound);
 
@@ -124,9 +110,6 @@ public class RangeWeapon : WeaponBase
     protected virtual void OnHit(RaycastHit hit, float damage)
     {
         hit.collider.GetComponent<IDamageable>()?.TakeDamage(damage);
-
-        if (ImpactEffect != null)
-            Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
     }
 
     public virtual void StartReload()
@@ -156,16 +139,10 @@ public class RangeWeapon : WeaponBase
 
         CurrentAmmo = MaxAmmo;
         IsReloading = false;
-        CurrentSpread = 0f; // Сброс разброса при перезарядке
-        ReloadFinished?.Invoke();// Перезарядка завершена
+        CurrentSpread = 0f;
+        ReloadFinished?.Invoke();
     }
 
-    //protected override void ResetAttackTimer()
-    //{
-    //    // Учитываем множитель скорострельности
-    //    float fireRate = AttackRate * GetTotalFireRateMultiplier();
-    //    _nextAttackTime = Time.time + (1f / fireRate);
-    //}
     protected override void ResetAttackTimer()
     {
         float baseRate = _weaponSettings != null ? baseFireRate : AttackRate;

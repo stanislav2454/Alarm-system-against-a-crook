@@ -1,8 +1,8 @@
-﻿// PlayerController.cs (заменяет Character, добавляет регистрацию)
-using UnityEngine;
+﻿using UnityEngine;// PlayerController.cs (заменяет Character, добавляет регистрацию)
 
 [RequireComponent(typeof(Userinput), typeof(MouseLooking), typeof(CharacterMovement))]
-[RequireComponent(typeof(Jumper), typeof(GroundDetector), typeof(AttackController))]
+[RequireComponent(typeof(Jumper), typeof(GroundDetector))]
+//[RequireComponent(typeof(AttackController))]
 [RequireComponent(typeof(Damageable))]
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterMovement _movement;
     [SerializeField] private Jumper _jumper;
     [SerializeField] private GroundDetector _groundDetector;
-    [SerializeField] private AttackController _attackController;
+    //[SerializeField] private AttackController _attackController;
     [SerializeField] private WeaponInventory _weaponInventory;
     [SerializeField] private Damageable _health;
 
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         _movement = GetComponent<CharacterMovement>();
         _jumper = GetComponent<Jumper>();
         _groundDetector = GetComponent<GroundDetector>();
-        _attackController = GetComponent<AttackController>();
+        //_attackController = GetComponent<AttackController>();
         _weaponInventory = GetComponent<WeaponInventory>();
         _health = GetComponent<Damageable>();
 

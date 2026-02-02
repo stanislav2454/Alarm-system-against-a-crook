@@ -7,10 +7,10 @@ public class WeaponUI : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI _weaponNameText;
     [SerializeField] private TextMeshProUGUI _ammoText;
-    [SerializeField] private Image _weaponIcon;
+    //[SerializeField] private Image _weaponIcon;
     [SerializeField] private Slider _reloadSlider;
     [SerializeField] private GameObject _reloadPanel;
-    [SerializeField] private TextMeshProUGUI _reloadTimeText; // Дополнительный текст для времени
+    [SerializeField] private TextMeshProUGUI _reloadTimeText;
 
 
     private WeaponInventory _weaponInventory;
@@ -52,8 +52,7 @@ public class WeaponUI : MonoBehaviour
         if (_weaponInventory != null)
         {
             _weaponInventory.WeaponChanged -= OnWeaponChanged;
-            _currentRangeWeapon.ReloadStarted -= OnReloadStarted;
-            _currentRangeWeapon.ReloadFinished -= OnReloadFinished;
+            //_currentRangeWeapon.ReloadFinished -= OnReloadFinished;
         }
     }
 
@@ -64,7 +63,6 @@ public class WeaponUI : MonoBehaviour
             _weaponNameText.text = newWeapon.Name;
             _currentRangeWeapon = newWeapon as RangeWeapon;
 
-            // Подписываемся на события перезарядки нового оружия
             if (_currentRangeWeapon != null)
             {
                 _currentRangeWeapon.ReloadStarted += OnReloadStarted;
@@ -77,7 +75,6 @@ public class WeaponUI : MonoBehaviour
         {
             _weaponNameText.text = "No Weapon";
 
-            // Отписываемся от событий старого оружия
             if (_currentRangeWeapon != null)
             {
                 _currentRangeWeapon.ReloadStarted -= OnReloadStarted;
@@ -87,18 +84,6 @@ public class WeaponUI : MonoBehaviour
             _currentRangeWeapon = null;
             UpdateAmmoDisplay();
         }
-        //if (newWeapon != null)
-        //{
-        //    _weaponNameText.text = newWeapon.Name;
-        //    _currentRangeWeapon = newWeapon as RangeWeapon;
-        //    UpdateAmmoDisplay();
-        //}
-        //else
-        //{
-        //    _weaponNameText.text = "No Weapon";
-        //    _currentRangeWeapon = null;
-        //    UpdateAmmoDisplay();
-        //}
     }
 
     private void OnReloadStarted(float duration)
@@ -146,24 +131,13 @@ public class WeaponUI : MonoBehaviour
             float elapsedTime = Time.time - _reloadStartTime;
             float progress = Mathf.Clamp01(elapsedTime / _reloadDuration);
 
-            // Обновление слайдера
             _reloadSlider.value = progress;
 
-            // Обновление текста времени (опционально)
             if (_reloadTimeText != null)
             {
                 float remainingTime = Mathf.Max(0, _reloadDuration - elapsedTime);
                 _reloadTimeText.text = $"{remainingTime:F1}s";
             }
         }
-        //if (_currentRangeWeapon != null && _currentRangeWeapon.IsReloading)
-        //{
-        //    _reloadPanel.SetActive(true);
-        //    // Здесь можно добавить прогресс перезарядки
-        //}
-        //else
-        //{
-        //    _reloadPanel.SetActive(false);
-        //}
     }
 }

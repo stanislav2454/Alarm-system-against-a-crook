@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterMovement), typeof(Runner), typeof(Crawler))]
-public class Userinput : MonoBehaviour
+public class Userinput : MonoBehaviour// !!! не грамотно именовано , надо UserInput !!!
 {
     public const string Horizontal = nameof(Horizontal);
     public const string Vertical = nameof(Vertical);
@@ -14,6 +14,7 @@ public class Userinput : MonoBehaviour
     [SerializeField] private KeyCode _runButton = KeyCode.LeftShift;
     [SerializeField] private KeyCode _sitButton = KeyCode.LeftControl;
     [SerializeField] private KeyCode _jumpButton = KeyCode.Space;
+    [SerializeField] private KeyCode _pauseButton = KeyCode.Escape;
 
     [SerializeField] private Runner _runner;
     [SerializeField] private Crawler _crawler;
@@ -26,6 +27,7 @@ public class Userinput : MonoBehaviour
     public string VerticalMouseDirection { get; private set; }
     public bool AttackInput { get; private set; }
     public bool IsReloading { get; private set; }
+    public bool IsPausePressed => Input.GetKeyDown(_pauseButton);// Добавляем свойство для доступа из других классов
 
     private void Update()
     {

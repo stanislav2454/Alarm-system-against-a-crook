@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ExtendedMagDecorator : WeaponDecorator// - Увеличенный магазин
 {
@@ -8,8 +7,8 @@ public class ExtendedMagDecorator : WeaponDecorator// - Увеличенный �
     private void Start()
     {
         _modifierName = "Extended Mag";
-        _damageMultiplier = 1f;      // Не влияет на урон
-        _fireRateMultiplier = 1f;    // Не влияет на скорострельность
+        _damageMultiplier = 1f;   
+        _fireRateMultiplier = 1f; 
     }
 
     public override void AttachToWeapon(WeaponBase weapon)
@@ -25,6 +24,7 @@ public class ExtendedMagDecorator : WeaponDecorator// - Увеличенный �
 
     internal float GetReloadTimeMultiplier()
     {
-        throw new NotImplementedException();
+        Debug.Log($"Это заглушка - надо переделать !");
+        return 0;
     }
 }

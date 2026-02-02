@@ -4,26 +4,26 @@ public class SilencerDecorator : WeaponDecorator// - глушитель
 {
     [SerializeField] private AudioClip _silencedSound;
 
-    private AudioSource _weaponAudio;
+    private AudioSource _weaponAudioSource;
 
     private void Start()
     {
         _modifierName = "Silencer";
-        _damageMultiplier = 0.8f;    // -20% урона
-        _fireRateMultiplier = 1f;    // Не влияет на скорострельность
+        _damageMultiplier = 0.8f;
+        _fireRateMultiplier = 1f;
     }
 
     public override void AttachToWeapon(WeaponBase weapon)
     {
         base.AttachToWeapon(weapon);
 
-        _weaponAudio = weapon.GetComponent<AudioSource>();
+        if (weapon.TryGetComponent(out _weaponAudioSource) == false)
+            Debug.LogError($"Не получилось установить AudioSource для {GetType().Name}");
     }
 
     public override void OnWeaponAttack()
     {
-        // Воспроизводим тихий звук вместо обычного
-        if (_silencedSound != null)
-            _weaponAudio.PlayOneShot(_silencedSound);
+        if (_silencedSound != null)// Воспроизводим тихий звук вместо обычного
+            _weaponAudioSource.PlayOneShot(_silencedSound);
     }
 }
